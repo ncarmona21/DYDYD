@@ -1,0 +1,95 @@
+---
+swagger: "2.0"
+info:
+  version: "2016-12-20T18:27:47Z"
+  title: "dydyd-apigateway"
+basePath: "/Prod"
+schemes:
+- "https"
+paths:
+  /identifyperson:
+    put:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: "{\n    \"status\" : \"$input.params('status')\",\n    
+                \"message\" : \"$input.params('message')\"\ \n}"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        requestTemplates:
+          application/json: "{\n    \"name\" : \"$input.params('name')\",\n    \"\slackUserName\" : \"$input.params('slackUserName')\",\n
+            \"rekognitionID\" : \"$input.params('rekognitionID')\"\n}"
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:846889525395:function:${stageVariables.IdentifyLambdaFunctionName}/invocations
+        passthroughBehavior: "when_no_templates"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+  /ignoreperson:
+    put:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: "{\n    \"status\" : \"$input.params('status')\",\n    
+                \"message\" : \"$input.params('message')\"\ \n}"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        requestTemplates:
+          application/json: "{\n    \"rekognitionID\" : \"$input.params('rekognitionID')\"\n}"
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:846889525395:function:${stageVariables.IgnoreLambdaFunctionName}/invocations
+        passthroughBehavior: "when_no_templates"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+  /updatedishstatus:
+    update:
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "200 response"
+          headers:
+            Content-Type:
+              type: "string"
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseTemplates:
+              application/json: "{\n    \"status\" : \"$input.params('status')\",\n    
+                \"message\" : \"$input.params('message')\"\ \n}"
+            responseParameters:
+              method.response.header.Content-Type: "'application/json'"
+        requestTemplates:
+          application/json: "{\n    \"dishID\" : \"$input.params('dishID')\"\n}"
+        uri: arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:846889525395:function:${stageVariables.UpdateLambdaFunctionName}/invocations
+        passthroughBehavior: "when_no_templates"
+        httpMethod: "UPDATE"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws"
+
